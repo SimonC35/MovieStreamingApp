@@ -5,24 +5,24 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var showingRegister = false
-    
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
                 Spacer()
-                
-                // Logo/Titre
+
+                // Logo / Titre
                 VStack(spacing: 10) {
                     Image(systemName: "film.fill")
                         .font(.system(size: 80))
                         .foregroundColor(.red)
-                    
+
                     Text("MovieStream")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                 }
                 .padding(.bottom, 40)
-                
+
                 // Champs de connexion
                 VStack(spacing: 15) {
                     TextField("Email", text: $email)
@@ -30,21 +30,24 @@ struct LoginView: View {
                         .textContentType(.emailAddress)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
-                    
+                        .accessibilityIdentifier("login_email")
+
                     SecureField("Mot de passe", text: $password)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .textContentType(.password)
+                        .accessibilityIdentifier("login_password")
                 }
                 .padding(.horizontal, 30)
-                
+
                 // Message d'erreur
                 if let error = authViewModel.errorMessage {
                     Text(error)
                         .foregroundColor(.red)
                         .font(.caption)
                         .padding(.horizontal, 30)
+                        .accessibilityIdentifier("login_error")
                 }
-                
+
                 // Bouton de connexion
                 Button(action: {
                     _ = authViewModel.login(email: email, password: password)
@@ -57,18 +60,20 @@ struct LoginView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
+                .accessibilityIdentifier("login_button")
                 .padding(.horizontal, 30)
                 .padding(.top, 10)
-                
-                // Lien vers l'inscription
+
+                // Lien inscription
                 Button(action: {
                     showingRegister = true
                 }) {
                     Text("Pas encore de compte ? S'inscrire")
                         .foregroundColor(.red)
                 }
+                .accessibilityIdentifier("go_to_register")
                 .padding(.top, 10)
-                
+
                 Spacer()
             }
             .navigationDestination(isPresented: $showingRegister) {
