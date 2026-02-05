@@ -50,6 +50,21 @@ struct MovieListView: View {
                     }
                 }
             }
+            .navigationTitle("Films")
+            .searchable(text: $movieViewModel.searchQuery, prompt: "Rechercher un film")
+            .onSubmit(of: .search) {
+                movieViewModel.searchMovies()
+            }
+            .onChange(of: movieViewModel.searchQuery) { oldValue, newValue in
+                if newValue.isEmpty {
+                    movieViewModel.fetchPopularMovies()
+                }
+            }
+            .onAppear {
+                if movieViewModel.movies.isEmpty {
+                    movieViewModel.fetchPopularMovies()
+                }
+            }
         }
     }
 }

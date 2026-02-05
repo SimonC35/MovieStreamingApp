@@ -28,4 +28,29 @@ class MovieViewModel: ObservableObject {
             }
         }
     }
+    
+    func searchMovies() {
+        guard !searchQuery.isEmpty else {
+            fetchPopularMovies()
+            return
+        }
+        
+        isLoading = true
+        errorMessage = nil
+        print(searchQuery)
+        Task {
+            do {
+                let fetchedMovies = try await apiService.searchMovies(query: searchQuery)
+                await MainActor.run {
+                    self.movies = fetchedMovies
+                    self.isLoading = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.errorMessage = "Erreur lors de la recherche"
+                    self.isLoading = false
+                }
+            }
+        }
+    }
 }
