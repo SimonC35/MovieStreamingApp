@@ -131,6 +131,7 @@
 				3A30DACB2F35D958005096AF /* MovieStreamingApp.app */,
 				3A30DACC2F35D958005096AF /* MovieStreamingAppTests.xctest */,
 				3A30DACD2F35D958005096AF /* MovieStreamingAppUITests.xctest */,
+				3A26F8A02F34A24900BF2DAD /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -184,7 +185,6 @@
 				3A26F8932F34A24900BF2DAD /* Views */,
 				3A26F8982F34A24900BF2DAD /* ContentView.swift */,
 				3A26F89C2F34A24900BF2DAD /* MovieStreamingApp.swift */,
-				3A26F8A02F34A24900BF2DAD /* README.md */,
 			);
 			path = MovieStreamingApp;
 			sourceTree = "<group>";
