@@ -1,8 +1,3 @@
-//
-//  MovieStreamingAppTests.swift
-//  MovieStreamingAppTests
-//
-
 import Testing
 @testable import MovieStreamingApp
 import Foundation

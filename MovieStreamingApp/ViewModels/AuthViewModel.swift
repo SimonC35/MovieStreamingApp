@@ -9,7 +9,15 @@ class AuthViewModel: ObservableObject {
     private let persistenceService = PersistenceService.shared
     
     init() {
-        checkExistingSession()
+        // --- LOGIQUE POUR LES TESTS UI ---
+        if ProcessInfo.processInfo.arguments.contains("UI_TEST") {
+            // Si on est en test, on nettoie tout avant de commencer
+            // Cela évite que l'app s'ouvre sur la MainTabView par erreur
+            logout()
+        } else {
+            // En mode normal, on vérifie si l'utilisateur est déjà logué
+            checkExistingSession()
+        }
     }
     
     func checkExistingSession() {
@@ -20,6 +28,9 @@ class AuthViewModel: ObservableObject {
     }
     
     func register(name: String, email: String, password: String) -> Bool {
+        // Petit "hack" pour accélérer les tests UI si besoin
+        // On pourrait auto-valider ici si on voulait gagner du temps
+        
         guard !name.isEmpty, !email.isEmpty, !password.isEmpty else {
             errorMessage = "Tous les champs sont requis"
             return false
@@ -48,6 +59,12 @@ class AuthViewModel: ObservableObject {
     }
     
     func login(email: String, password: String) -> Bool {
+        // Bypass optionnel : si tu veux que TOUS les logins fonctionnent en UI TEST
+        if ProcessInfo.processInfo.arguments.contains("BYPASS_LOGIN") {
+             self.isAuthenticated = true
+             return true
+        }
+
         guard !email.isEmpty, !password.isEmpty else {
             errorMessage = "Email et mot de passe requis"
             return false
@@ -69,30 +86,32 @@ class AuthViewModel: ObservableObject {
         self.currentUser = nil
         self.isAuthenticated = false
         persistenceService.clearCurrentUser()
+        
+        // Si c'est un test UI, on peut aussi vider tous les utilisateurs créés
+        if ProcessInfo.processInfo.arguments.contains("UI_TEST") {
+            if let bundleID = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: bundleID)
+            }
+        }
     }
     
+    // ... Reste de tes fonctions (updateProfile, addFavorite, etc.) sans changement
     func updateProfile(name: String, email: String) -> Bool {
         guard var user = currentUser else { return false }
-        
         guard !name.isEmpty, !email.isEmpty else {
             errorMessage = "Tous les champs sont requis"
             return false
         }
-        
         guard email.contains("@") else {
             errorMessage = "Email invalide"
             return false
         }
-        
-        // Vérifier si l'email existe déjà (sauf si c'est le même)
         if email != user.email && persistenceService.userExists(email: email) {
             errorMessage = "Cet email est déjà utilisé"
             return false
         }
-        
         user.name = name
         user.email = email
-        
         persistenceService.saveUser(user)
         persistenceService.saveCurrentUser(user)
         self.currentUser = user

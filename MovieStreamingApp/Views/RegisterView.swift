@@ -15,7 +15,6 @@ struct RegisterView: View {
         VStack(spacing: 20) {
             Spacer()
             
-            // Titre
             VStack(spacing: 10) {
                 Image(systemName: "person.crop.circle.badge.plus")
                     .font(.system(size: 70))
@@ -27,37 +26,39 @@ struct RegisterView: View {
             }
             .padding(.bottom, 30)
             
-            // Champs d'inscription
             VStack(spacing: 15) {
                 TextField("Nom", text: $name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .textContentType(.name)
+                    .accessibilityIdentifier("register_name_field") // ID de test
                 
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .textContentType(.emailAddress)
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
+                    .accessibilityIdentifier("register_email_field") // ID de test
                 
                 SecureField("Mot de passe", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .textContentType(.newPassword)
+                    .accessibilityIdentifier("register_password_field") // ID de test
                 
                 SecureField("Confirmer le mot de passe", text: $confirmPassword)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .textContentType(.newPassword)
+                    .accessibilityIdentifier("register_confirm_password_field") // ID de test
             }
             .padding(.horizontal, 30)
             
-            // Message d'erreur
             if let error = authViewModel.errorMessage {
                 Text(error)
                     .foregroundColor(.red)
                     .font(.caption)
                     .padding(.horizontal, 30)
+                    .accessibilityIdentifier("register_error_message")
             }
             
-            // Bouton d'inscription
             Button(action: {
                 registerUser()
             }) {
@@ -71,6 +72,7 @@ struct RegisterView: View {
             }
             .padding(.horizontal, 30)
             .padding(.top, 10)
+            .accessibilityIdentifier("register_submit_button") // ID de test
             
             Spacer()
         }
@@ -79,6 +81,7 @@ struct RegisterView: View {
             Button("OK") {
                 dismiss()
             }
+            .accessibilityIdentifier("alert_ok_button")
         } message: {
             Text(alertMessage)
         }
@@ -91,7 +94,7 @@ struct RegisterView: View {
         }
         
         if authViewModel.register(name: name, email: email, password: password) {
-            alertMessage = "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter."
+            alertMessage = "Votre compte a été créé avec succès."
             showingAlert = true
         }
     }

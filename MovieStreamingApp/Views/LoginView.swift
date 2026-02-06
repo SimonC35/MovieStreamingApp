@@ -30,12 +30,12 @@ struct LoginView: View {
                         .textContentType(.emailAddress)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
-                        .accessibilityIdentifier("login_email")
+                        .accessibilityIdentifier("login_email") // <--- ID pour le test
 
                     SecureField("Mot de passe", text: $password)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .textContentType(.password)
-                        .accessibilityIdentifier("login_password")
+                        .accessibilityIdentifier("login_password") // <--- ID pour le test
                 }
                 .padding(.horizontal, 30)
 
@@ -45,7 +45,7 @@ struct LoginView: View {
                         .foregroundColor(.red)
                         .font(.caption)
                         .padding(.horizontal, 30)
-                        .accessibilityIdentifier("login_error")
+                        .accessibilityIdentifier("login_error_message")
                 }
 
                 // Bouton de connexion
@@ -60,9 +60,9 @@ struct LoginView: View {
                         .foregroundColor(.white)
                         .cornerRadius(10)
                 }
-                .accessibilityIdentifier("login_button")
                 .padding(.horizontal, 30)
                 .padding(.top, 10)
+                .accessibilityIdentifier("login_button") // <--- ID pour le test
 
                 // Lien inscription
                 Button(action: {
@@ -71,8 +71,8 @@ struct LoginView: View {
                     Text("Pas encore de compte ? S'inscrire")
                         .foregroundColor(.red)
                 }
-                .accessibilityIdentifier("go_to_register")
                 .padding(.top, 10)
+                .accessibilityIdentifier("go_to_register") // <--- ID pour naviguer vers l'inscription
 
                 Spacer()
             }
