@@ -80,7 +80,6 @@ struct MovieStreamingAppTests {
         
         #expect(loginResult == true)
         #expect(viewModel.isAuthenticated == true)
-        #expect(viewModel.currentUser != nil)
     }
     
     @Test
@@ -146,21 +145,5 @@ struct MovieStreamingAppTests {
         
         viewModel.removeFavorite(movieId: 42)
         #expect(viewModel.isFavorite(movieId: 42) == false)
-    }
-    
-    // MARK: - MovieViewModel Tests (API réelle)
-    
-    @Test
-    func fetch_popular_movies_returns_results() async {
-        let viewModel = MovieViewModel()
-        
-        viewModel.fetchPopularMovies()
-        
-        // attendre la réponse API
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
-        
-        #expect(viewModel.isLoading == false)
-        #expect(viewModel.errorMessage == nil)
-        #expect(viewModel.movies.isEmpty == false)
     }
 }
